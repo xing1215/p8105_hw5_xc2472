@@ -61,4 +61,33 @@ iris_without_missing = map_df(iris_with_missing, clean_missing)
 
 ## Problem 2
 
+create a dataframe containing all file names
+
+```{r}
+study = list.files("./data")
+```
+
+create a function to read the file
+
+```{r}
+read_data = function(filenames) {
+  data_path = "./data/"
+  read_csv(file = str_c(data_path, filenames))
+}
+```
+
+create a dataframe for the experiment data
+
+```{r}
+study_df = map_df(study, read_data)
+
+study_df %>% 
+  mutate(
+    id = study
+  )
+```
+
+
+
+
 
