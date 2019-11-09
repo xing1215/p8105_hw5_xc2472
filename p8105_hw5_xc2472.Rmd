@@ -81,9 +81,17 @@ create a dataframe for the experiment data
 ```{r}
 study_df = map_df(study, read_data)
 
-study_df %>% 
+study_df = 
+  study_df %>% 
   mutate(
-    id = study
+    id = study,
+    id = str_replace(id, ".csv$", "")
+  ) %>% 
+  separate(id, into = c("arm", "id"), sep = "_") %>% 
+  pivot_longer(
+    week_1:week_8,
+    names_to = "week",
+    values_to = "data"
   )
 ```
 
