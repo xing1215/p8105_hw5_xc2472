@@ -96,6 +96,48 @@ study_df =
 ```
 
 
+## Problem 3
+
+create a function
+
+```{r}
+sim_regression = function(beta0 = 2, beta1) {
+  sim_data = tibble(
+    x = rnorm(30, 0, 1),
+    y = beta0 + beta1*x + rnorm(30, 0, 50)
+  )
+  
+  p_value = 
+    lm(y ~ x, data = sim_data) %>% 
+    broom::tidy()
+}
+
+```
+
+set beta1 = 0 and generate 10000 datasets from the model
+
+```{r}
+sim_results = 
+  rerun(100, sim_regression(beta1 = 0)) %>% 
+  bind_rows()
+```
+
+Repeat the above for beta1 = {1,2,3,4,5,6}
+
+```{r}
+sim_results = 
+  tibble(beta1_value = c(1, 2, 3, 4, 5, 6)) %>% 
+  mutate(
+    output_lists = map(.x = beta1_value, ~rerun(100, sim_regression(beta1 = .x))),
+    estimate_dfs = map(output_lists, bind_rows)
+  ) %>% 
+  select(-output_lists) %>% 
+  unnest(estimate_dfs)
+```
+
+
+
+
 
 
 
