@@ -109,6 +109,11 @@ study_tidy %>%
     title = "Data for each subject across weeks")
 ```
 
+**comment**
+
+From the spaghetti plot, we saw an increasing trend of the data for each subject in experiment 
+group. We didn't see any obviously increasing of decreasing trend of the data for each subject in 
+control group. 
 
 
 ## Problem 3
