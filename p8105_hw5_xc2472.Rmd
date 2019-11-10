@@ -64,7 +64,7 @@ iris_without_missing = map_df(iris_with_missing, clean_missing)
 create a dataframe containing all file names
 
 ```{r}
-study = list.files("./data")
+study = tibble(files = list.files("./data"))
 ```
 
 create a function to read the file
@@ -74,28 +74,35 @@ read_data = function(filenames) {
   data_path = "./data/"
   read_csv(file = str_c(data_path, filenames))
 }
+
 ```
 
 create a dataframe for the experiment data
 
 ```{r}
-study_df = 
-  map(study, read_data) %>% 
-  bind_rows()
-
-study_df = 
-  study_df %>% 
+study_tidy = 
+  study %>% 
   mutate(
-    id = study,
-    id = str_replace(id, ".csv$", "")
-  ) %>% 
-  separate(id, into = c("arm", "id"), sep = "_") %>% 
+    data = map(study$files, read_data),
+    files = str_replace(files, ".csv$", "")) %>% 
+  unnest(data) %>% 
   pivot_longer(
     week_1:week_8,
     names_to = "week",
     values_to = "data"
-  )
+  ) %>% 
+  rename(arm_id = files)
 ```
+
+create a spaghetti plot
+
+```{r}
+study_tidy %>% 
+  separate(arm_id, into = c("arm", "id"), sep = "_", remove = FALSE) %>% 
+  ggplot(aes(x = week, y = data, group = arm_id, color = arm)) +
+  geom_line()
+```
+
 
 
 ## Problem 3
