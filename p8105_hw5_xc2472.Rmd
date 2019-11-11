@@ -190,9 +190,6 @@ sim_results %>%
   geom_smooth(method = "lm", se = FALSE)
 ```
 
-**Explaination**
-
-
 
 ### The third plot
 
@@ -207,7 +204,10 @@ sim_results %>%
 
 **Explaination**
 
-
+The sample average of estimated beta1s across tests for which the null is rejected do not 
+approximately equal to the true values of beta1. From the first graph, we know that the larger the
+effect size is, the easier to reject the null hypothesis. Therefore, the estimated beta1s with 
+p-value smaller than 0.05 would tend to be larger than the true beta1 values. 
 
 
 
